@@ -1,0 +1,134 @@
+=====================================================================
+                           SAM L11 ターゲット依存部
+                                  Last Modified:2020 Sep 13 21:40:57
+=====================================================================
+
+○ToDo
+・undefが必要な衝突の定義の扱い．
+#undef CCR
+#undef FPCCR
+#undef CPACR
+・
+NVMCTRL_Initializ()
+
+・ファイルの残り
+  ・target_config.h
+  ・target_config.c
+  ・target_serial.h
+  ・target_serial.c
+
+  
+○概要
+
+SAM L11 ターゲット依存部は，MicroChip SAM L11 をサポートしている．ボー
+ドとしては，SAM L11 Xplained Pro Evaluation Kit をサポートしている．
+
+○カーネルの使用リソース
+
+カーネルは以下のリソースを使用する．
+
+  ・ROM/RAM
+     コードとデータを配置する．
+     使用量はオブジェクト数に依存する．
+  
+  ・SysTick
+     カーネル内部のティックの生成に用いる．
+     
+  ・SERCOM2
+     コンソールの出力に使用．
+
+
+○Atmel Studioによるビルドでデバッグ
+
+Atmel StudioによりGUIによるビルドとデバッグが可能である．
+
+動作確認を行ったのは次のバージョンである．
+
+Atmel Studio 7.0
+
+Atmel Studio はソースコードのエンコードがutf8である必要があるため，ソー
+ス全体をutf8にすることを推奨する．
+
+●Atmel Studio のインストール
+以下のサイトにアクセスして
+
+ http://www.atmel.com/ja/jp/tools/ATMELSTUDIO.aspx
+
+以下のツールを選択する．
+
+ Atmel Studio 7.0 web installer (recommended)
+ 
+メールアドレス等を入力するとダウンロード可能である．
+
+●付属のプロジェクトによるビルド
+
+./atmelstudio/asp.atslnを開く
+メニュー -> Build -> Build Solution を選択してビルド
+メニュー -> Debug -> Start Debugging and Break を選択をしてデバッグの開始
+
+●プロジェクトの作成方法
+
+フォルダを以下の場所に作成する．<asp>はASPカーネルのソースを展開したフ
+ォルダである．
+
+<asp>/<dir1>/<dir2>/
+
+<dir2>以下に本フォルダのMakefileをコピーする．<asp>/sampleから 
+sample1.c/sample1.cfg/sample1.h をコピーする．フォルダの場所を変更した
+い場合は，MakefileのSRCDIRを変更すること．
+
+●Atmelプロジェクトの作成
+
+メニュー -> File -> New -> Project
+
+左のメニューから
+
+C/C++  -> GCC C Executable Project を選択
+
+下のボックスの Name に asp と入力．
+
+Device Selection の画面が出るので，
+
+Device Family : SAMD51
+
+を選択して，リストから，
+
+ATSAMD51E16
+
+を選択．
+
+プロジェクトが作成されるので，main.c 等は不要なので削除．
+
+メニュー -> Debug -> asp Properties  を選択
+
+Build タブを選択
+Use External Makefile を選択
+Make file Name に実行したいMakefileをプロジェクトからの相対パスで指定．
+
+ボードのPROGRAMINGポートを接続
+
+Tool タブを選択
+Select debugger/programmer から EDBG を選択
+Programmin settings を Incremental Programming を選択
+
+Advanced タブを選択
+Use GDB のチェックを外す
+
+○ライブラリ
+
+./lib 以下のファイルは，Atmel Studio のサンプルの生成で作成されたファ
+イルを置くことで，各種初期化をこれらのファイルにより行うことが可能であ
+る．
+
+設定を変更したい場合は，Atmel Studio でサンプルの生成時に設定を変更し
+て，ファイルを上書きすればよい．
+
+現状のファイルで設定は次の通りである．
+
+・クロック
+  ・内蔵16Mhzをコア及び周辺回路に使用．
+
+○変更履歴
+
+2018/07/14
+・新規作成
