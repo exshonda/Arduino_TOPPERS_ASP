@@ -125,6 +125,9 @@ target_timer_terminate(intptr_t exinf)
 	sil_wrw_mem((void*)SYSTIC_CONTROL_STATUS, 0x00);
 }
 
+typedef	void			(*ARDUINOVECTOR)(void);
+extern ARDUINOVECTOR	exception_table[];
+
 /*
  *  タイマ割込みハンドラ
  */
@@ -137,4 +140,8 @@ target_timer_handler(void)
 	i_begin_int(INTNO_TIMER);
 	signal_time();                    /* タイムティックの供給 */
 	i_end_int(INTNO_TIMER);
+
+	if (exception_table[IRQNO_SYSTICK] != NULL) {
+		(*(exception_table[IRQNO_SYSTICK]))();
+	}
 }

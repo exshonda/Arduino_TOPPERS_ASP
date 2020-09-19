@@ -142,7 +142,7 @@ endif
 ifndef OMIT_OPTIMIZATION
   COPTS := $(COPTS) -O2
 endif
-CDEFS := $(CDEFS) 
+CDEFS := $(CDEFS)
 INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch -I$(SRCDIR) $(INCLUDES) -I..
 LDFLAGS := $(LDFLAGS) 
 LIBS := $(LIBS) $(CXXLIBS)

@@ -16,7 +16,7 @@ SECTIONS
 	.text :
 	{
 		__text = .;
-		*(.vector)
+		*(.rodata.vector)
 		*(.text)
 		*(.text.*)
 	} > rom

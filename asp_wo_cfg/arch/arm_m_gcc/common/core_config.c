@@ -304,6 +304,10 @@ default_exc_handler(void *p_excinf)
 #endif /* OMIT_DEFAULT_EXC_HANDLER */
 
 #ifndef OMIT_DEFAULT_INT_HANDLER
+
+typedef	void			(*ARDUINOVECTOR)(void);
+extern ARDUINOVECTOR	exception_table[];
+
 /*
  *  未登録の割込みが発生した場合に呼び出される
  */
@@ -314,6 +318,11 @@ default_int_handler(void *p_excinf)
 	uint32_t pc      = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_PC);
 	uint32_t xpsr    = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_XPSR);
 	uint32_t excno   = get_ipsr() & IPSR_ISR_NUMBER;
+
+	if (exception_table[excno] != NULL) {
+		(*(exception_table[excno]))();
+		return;
+	}
 
 	syslog(LOG_EMERG, "\nUnregistered Interrupt occurs.");
 	syslog(LOG_EMERG, "Excno = 0x%08X, PC = 0x%08X, XPSR = 0x%08X, iipm = 0x%08X, p_excinf = 0x%08X",

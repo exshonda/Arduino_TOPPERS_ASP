@@ -58,7 +58,7 @@ KERNEL_DIR := $(KERNEL_DIR) $(TARGETDIR) \
 
 KERNEL_ASMOBJS := $(KERNEL_ASMOBJS)
 KERNEL_COBJS := $(KERNEL_COBJS) target_config.o core_timer.o \
-                plib_clock.o
+                plib_clock.o target_vector.o
                 
 #
 #  システムサービスに関する定義

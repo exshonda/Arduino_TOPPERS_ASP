@@ -125,10 +125,27 @@ svc_perror(const char *file, int_t line, const char *expr, ER ercd)
 
 #define	SVC_PERROR(expr)	svc_perror(__FILE__, __LINE__, #expr, (expr))
 
+extern void port_initialize(void);
+extern void sercom_init_uart(uint32_t portid);
+
+FP exception_table[16 + 138 + 1];
+
 void
 setup(void) {
-	/* クロックの初期化 */
+	/*
+	 * クロックの初期化
+	 */
 	CLOCK_Initialize();
+
+	/*
+	 *  ポートの初期化
+	 */
+	port_initialize();
+
+	/*
+	 *  target_fput_logが使えるようにUARTを初期化
+	 */
+	sercom_init_uart(1);
 
 	/* カーネルスタート */
 	sta_ker();

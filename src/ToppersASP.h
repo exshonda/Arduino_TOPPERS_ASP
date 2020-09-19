@@ -10,6 +10,11 @@
 #include "../asp_wo_cfg/syssvc/serial.h"
 #include "kernel_id.h"
 
+/*
+ *  カーネルのスタート関数
+ */
+extern void StartToppersASP(void);
+
 #ifdef __cplusplus
 extern "C" {
 #endif

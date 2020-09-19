@@ -1,3 +1,7 @@
+#ifdef ARDUINO
+#include "Arduino.h"
+#endif /* ARDUINO */
+
 #include "ToppersASP.h"
 
 /*
@@ -9,6 +13,26 @@ extern void user_inirtn(void);
  *  ユーザー記述の終了関数
  */
 extern void user_terrtn(void);
+
+#ifdef ARDUINO
+/*
+ *  カーネルのスタート関数
+ */
+void
+StartToppersASP(void)
+{
+	/* SEMCOM2初期化 */
+	Serial1.begin(115200);
+	Serial1.println("TOPPERS/ASP for Arduino");
+	Serial1.flush();
+
+	/* 割込み禁止 */
+	noInterrupts();
+
+	/* カーネルスタート */
+	sta_ker();
+}
+#endif /* ARDUINO */
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,6 +60,9 @@ inirtn(void)
 	serial_initialize(0);
 	logtask_initialize(0);
 
+	/*
+	 *  ユーザー記述の初期化関数の呼び出し
+	 */
 	user_inirtn();
 }
 
@@ -52,9 +79,15 @@ terrtn(void)
 	serial_terminate(0);
 	target_timer_terminate(0);
 
+	/*
+	 *  ユーザー記述の終了関数
+	 */
 	user_terrtn();
 }
 
+/*
+ *  ベクターテーブルのリセットエントリ用のダミー
+ */
 __attribute__((weak))
 void
 _kernel__start(void)
