@@ -1,6 +1,10 @@
 #ifndef TOPPERS_ASP_H
 #define TOPPERS_ASP_H
 
+#define ENABLE_IDLELOOP
+
+#define IDLELOOP_STACKSIZE   (1024U*10U)
+
 #define ARDUINO_PASS
 
 #include <../asp_wo_cfg/include/kernel.h>

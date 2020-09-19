@@ -6,16 +6,16 @@
  *
  *  シリアルドライバのTNUM_PORTが2の場合に合わせてある．
  */
-#define TNUM_TSKID	5		/* タスクの数 */
-#define TNUM_SEMID	4		/* セマフォの数 */
-#define TNUM_FLGID	0		/* イベントフラグ */
-#define TNUM_DTQID	0		/* データキュー */
-#define TNUM_PDQID	0		/* 優先度データキュー */
-#define TNUM_MBXID	0		/* メールボックス */
-#define TNUM_MPFID	0		/* 固定長メモリプール */
-#define TNUM_CYCID	1		/* 周期ハンドラ */
-#define TNUM_ALMID	1		/* アラームハンドラ */
-#define TNUM_ISRID	2		/* 割込みサービスルーチン */
+#define TNUM_TSKID	14		/* タスクの数 */
+#define TNUM_SEMID	12		/* セマフォの数 */
+#define TNUM_FLGID	10		/* イベントフラグ */
+#define TNUM_DTQID	10		/* データキュー */
+#define TNUM_PDQID	10		/* 優先度データキュー */
+#define TNUM_MBXID	10		/* メールボックス */
+#define TNUM_MPFID	10		/* 固定長メモリプール */
+#define TNUM_CYCID	10		/* 周期ハンドラ */
+#define TNUM_ALMID	10		/* アラームハンドラ */
+#define TNUM_ISRID	10		/* 割込みサービスルーチン */
 
 /*
  *  カーネルが割り付けるメモリ領域のサイズ

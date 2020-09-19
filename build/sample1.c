@@ -112,6 +112,8 @@
  */
 #include "kernel_id.h"
 
+#define MAIN_TASK TASK10
+
 /*
  *  サービスコールのエラーのログ出力
  */
@@ -147,7 +149,9 @@ setup(void) {
 	 */
 	sercom_init_uart(1);
 
-	/* カーネルスタート */
+	/*
+	 *  カーネルスタート
+	 */
 	sta_ker();
 }
 
