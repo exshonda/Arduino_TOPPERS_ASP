@@ -34,9 +34,9 @@ void setup() {
   while (!SerialUSB);
 #endif /* USE_SERIALUSB */
 
+  // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
 
-  // initialize digital pin LED_BUILTIN as an output.
   StartToppersASP();
 }
 
