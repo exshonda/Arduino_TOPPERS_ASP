@@ -79,11 +79,6 @@ user_inirtn(void)
   assert(ercd == E_OK);  
 }
 
-void
-user_terrtn(void) {
-  
-}
-
 int loop_count;
 
 // the loop function runs over and over again forever

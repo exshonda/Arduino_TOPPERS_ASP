@@ -43,6 +43,12 @@ ToppersASPDelayMs(uint32_t ms)
 		Asm("nop");
 	}
 }
+
+__attribute__((weak))
+void
+user_terrtn() {
+}
+
 #endif /* ARDUINO */
 
 #ifdef __cplusplus
