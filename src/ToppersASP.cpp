@@ -26,8 +26,8 @@ StartToppersASP(void)
 	Serial1.println("TOPPERS/ASP for Arduino");
 	Serial1.flush();
 
-	/* 割込み禁止 */
-	noInterrupts();
+	/* 割込みロック状態へ */
+	Asm("cpsid f");
 
 	/* カーネルスタート */
 	sta_ker();
