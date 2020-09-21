@@ -93,7 +93,6 @@ SIOPCB siopcb_table[TNUM_SIOP];
 #define INDEX_SIOP(siopid)  ((uint_t)((siopid) - 1))
 #define get_siopcb(siopid)  (&(siopcb_table[INDEX_SIOP(siopid)]))
 
-//#include "plib_sercom_usart_common.h"
 
 /* SERCOM2 USART baud value for 115200 Hz baud rate */
 #define SERCOM2_USART_INT_BAUD_VALUE            (64328U)
@@ -172,11 +171,7 @@ sercom_putc(uint32_t siopid, char c)
 Inline bool_t
 uart_getready(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	return(SERCOM2_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk);
-#endif
-	return(SERCOM2_REGS->USART_INT.SERCOM_INTENSET & SERCOM_USART_INT_INTENSET_RXC_Msk);
+	return(SERCOM2_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTENSET_RXC_Msk);
 }
 
 /*
@@ -185,10 +180,6 @@ uart_getready(SIOPCB *p_siopcb)
 Inline bool_t
 uart_putready(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	return(p_sercom->USART.INTFLAG.bit.DRE == SERCOM_USART_INTFLAG_DRE);
-#endif
 	return(SERCOM2_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_DRE_Msk);
 }
 
@@ -198,10 +189,6 @@ uart_putready(SIOPCB *p_siopcb)
 Inline uint8_t
 uart_getchar(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	return p_sercom->USART.DATA.bit.DATA;
-#endif
 	return  SERCOM2_REGS->USART_INT.SERCOM_DATA;
 }
 
@@ -211,10 +198,6 @@ uart_getchar(SIOPCB *p_siopcb)
 Inline void
 uart_putchar(SIOPCB *p_siopcb, uint8_t c)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	p_sercom->USART.DATA.reg = (uint16_t)c;
-#endif
 	SERCOM2_REGS->USART_INT.SERCOM_DATA = c;
 }
 
@@ -224,10 +207,6 @@ uart_putchar(SIOPCB *p_siopcb, uint8_t c)
 Inline void
 uart_enable_send(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	p_sercom->USART.INTENSET.reg = SERCOM_USART_INTENSET_TXC;
-#endif
 	SERCOM2_REGS->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_TXC_Msk;
 }
 
@@ -237,10 +216,6 @@ uart_enable_send(SIOPCB *p_siopcb)
 Inline void
 uart_disable_send(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	p_sercom->USART.INTENCLR.reg = SERCOM_USART_INTENCLR_TXC;
-#endif
 	SERCOM2_REGS->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_TXC_Msk;
 }
 
@@ -251,10 +226,6 @@ uart_disable_send(SIOPCB *p_siopcb)
 Inline void
 uart_enable_rcv(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	p_sercom->USART.INTENSET.reg = SERCOM_USART_INTENSET_RXC;
-#endif
 	SERCOM2_REGS->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_RXC_Msk;
 }
 
@@ -264,10 +235,6 @@ uart_enable_rcv(SIOPCB *p_siopcb)
 Inline void
 uart_disable_rcv(SIOPCB *p_siopcb)
 {
-#if 0
-	Sercom*	p_sercom = p_siopcb->p_siopinib->p_sercom;
-	p_sercom->USART.INTENCLR.reg = SERCOM_USART_INTENCLR_RXC;
-#endif
 	SERCOM2_REGS->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_RXC_Msk;
 }
 
@@ -411,6 +378,8 @@ sio_cls_por(SIOPCB *p_siopcb)
 	dis_int(INTNO_SIO_TX);
 }
 
+int rcv_count;
+
 /*
  *  SIOの割込みハンドラ
  */
@@ -424,6 +393,7 @@ sio_isr(intptr_t exinf)
 		 *  受信通知コールバックルーチンを呼び出す．
 		 */
 		sio_irdy_rcv(p_siopcb->exinf);
+		rcv_count++;
 	}
 	if (uart_putready(p_siopcb)) {
 		/*
