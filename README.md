@@ -72,11 +72,11 @@ Arduino IDE を再起動する．
 - マイコンボードに書き込むを選択して書き込む．
 
 - ターミナルエミュレータを接続
- - Wio TerminalのUSB端子によるCOMポート
- - USB UARTによるCOMポート(オプション)
+	- Wio TerminalのUSB端子によるCOMポート
+	- USB UARTによるCOMポート(オプション)
 
 - 実行
- - Wio TerminalのUSB端子によるCOMポート にターミナルエミュレータを接続すると実行が開始される．
+	- Wio TerminalのUSB端子によるCOMポート にターミナルエミュレータを接続すると実行が開始される．
 
 
 ## 使用方法
