@@ -19,6 +19,11 @@
  */
 extern void StartToppersASP(void);
 
+/*
+ *  NOPによる一定時間待ち
+ */
+extern void ToppersASPDelayMs(uint32_t ms);
+
 #ifdef __cplusplus
 extern "C" {
 #endif

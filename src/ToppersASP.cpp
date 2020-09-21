@@ -32,6 +32,17 @@ StartToppersASP(void)
 	/* カーネルスタート */
 	sta_ker();
 }
+
+#define CAL_FACTOR (F_CPU/6000)
+
+void
+ToppersASPDelayMs(uint32_t ms)
+{
+	uint32_t i;
+	for ( i = 0; i < ms * CAL_FACTOR; i++) {
+		Asm("nop");
+	}
+}
 #endif /* ARDUINO */
 
 #ifdef __cplusplus
