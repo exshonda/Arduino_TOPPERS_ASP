@@ -8,19 +8,6 @@ TOPPERS/ASPカーネル without Configurator（以下，ASP_WO_CFGカーネル�
 て，ASPカーネルを改造して作成したものです．改造にあたっては，ASPカーネ
 ルの動的機能生成拡張パッケージのコードも活用しました．
 
-オリジナルのSVN
-  https://dev.toppers.jp/trac_user/contrib/browser/asp_wo_cfg/
-  
-以下の変更を追加．  
-・SAMD51依存部の追加
-・-Dなしでビルド出来るように変更．
-・外部ツールなしでビルド出来るように変更．
-  ・offset.hは事前に生成しておく．
-  ・makedep は使用しない．
-・ARM_M依存部
-  ・bitpat_cfgint[]を使用しないよう変更．
-  ・int_iipm_tbl[]を使用しないよう変更．
-  
 【使用方法】
 
 ASP_WO_CFGカーネルのユーザーズマニュアルを用意する予定はありません．ま
