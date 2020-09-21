@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{606CD3BC-00DD-421A-8EC3-D232DBEB2464}") = "asp", "asp\asp.objproj", "{5005651D-D41C-4ABA-8D49-8F4E9B80B830}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5005651D-D41C-4ABA-8D49-8F4E9B80B830}.Debug|ARM.ActiveCfg = Debug|ARM
+		{5005651D-D41C-4ABA-8D49-8F4E9B80B830}.Debug|ARM.Build.0 = Debug|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
