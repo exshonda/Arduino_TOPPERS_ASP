@@ -18,7 +18,6 @@
 #define TASK9			12
 #define TASK10			13
 
-
 #define SERIAL_RCV_SEM1	1 /* 変更した場合はライブラリを作り直し */
 #define SERIAL_SND_SEM1	2 /* 変更した場合はライブラリを作り直し */
 #define SEM1			3

@@ -20,6 +20,6 @@
 /*
  *  カーネルが割り付けるメモリ領域のサイズ
  */
-#define	KMM_SIZE	(1024 * 16)
+#define	KMM_SIZE	(1024 * 32)
 
 #endif /* TOPPERS_KERNEL_CFG_H */
