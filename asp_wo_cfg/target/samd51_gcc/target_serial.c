@@ -378,8 +378,6 @@ sio_cls_por(SIOPCB *p_siopcb)
 	dis_int(INTNO_SIO_TX);
 }
 
-int rcv_count;
-
 /*
  *  SIOの割込みハンドラ
  */
@@ -393,7 +391,6 @@ sio_isr(intptr_t exinf)
 		 *  受信通知コールバックルーチンを呼び出す．
 		 */
 		sio_irdy_rcv(p_siopcb->exinf);
-		rcv_count++;
 	}
 	if (uart_putready(p_siopcb)) {
 		/*
