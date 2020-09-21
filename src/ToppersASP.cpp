@@ -59,8 +59,13 @@ extern void	logtask_initialize(intptr_t exinf) throw();
 extern void	logtask_terminate(intptr_t exinf) throw();
 extern void	target_timer_terminate(intptr_t exinf) throw();
 
+#ifdef USE_TINYUSB
 static void init_tinyusb(void);
+#endif /* USE_TINYUSB */
+
+#ifdef ENABLE_IDLELOOP
 static void init_idleloop(void);
+#endif /* ENABLE_IDLELOOP */
 
 void
 inirtn(void)
