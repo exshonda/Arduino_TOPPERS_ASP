@@ -24,8 +24,18 @@
 
 #include <ToppersASP.h>
 
+#define USE_SERIALUSB
+
 // the setup function runs once when you press reset or power the board
 void setup() {
+#ifdef USE_SERIALUSB
+  SerialUSB.begin(115200);
+  ToppersASPDelayMs(1000);
+  while (!SerialUSB);
+#endif /* USE_SERIALUSB */
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
   // initialize digital pin LED_BUILTIN as an output.
   StartToppersASP();
 }
@@ -33,12 +43,9 @@ void setup() {
 void
 task1(intptr_t exinf)
 {
-  pinMode(LED_BUILTIN, OUTPUT);
+  int count = 0;
   while(1){
-    syslog(LOG_NOTICE, "task1 running.");
-    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)    
-    dly_tsk(1000);                     // wait for a second    
-    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+    syslog(LOG_NOTICE, "task1 is running. %d", count++);
     dly_tsk(1000);                     // wait for a second    
   }
 }
@@ -46,9 +53,9 @@ task1(intptr_t exinf)
 void
 task2(intptr_t exinf)
 {
-  volatile int i;
+  int count = 0;
   while(1){
-    syslog(LOG_NOTICE, "task2 running.");
+    syslog(LOG_NOTICE, "task2 is running. %d", count++);
     dly_tsk(1000);                     // wait for a second            
   }
 }
@@ -66,6 +73,7 @@ user_inirtn(void)
   ctsk.stksz = 1024;
   ctsk.stk = NULL;
   ercd = cre_tsk(TASK1, &ctsk);
+
   ctsk.task = task2;
   ercd = cre_tsk(TASK2, &ctsk);
   assert(ercd == E_OK);  
@@ -76,8 +84,18 @@ user_terrtn(void) {
   
 }
 
+int loop_count;
+
 // the loop function runs over and over again forever
 void loop() {
-    syslog(LOG_NOTICE, "loop running.");
-    dly_tsk(1000);                     // wait for a second   
+#ifdef USE_SERIALUSB
+  SerialUSB.print("loop: ");
+  SerialUSB.println(loop_count++);
+#else /* USE_SERIALUSB */
+	syslog(LOG_NOTICE, "loop is running. %d", loop_count++);
+#endif /* USE_SERIALUSB */
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
 }
