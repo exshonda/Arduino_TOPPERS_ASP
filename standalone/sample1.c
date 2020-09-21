@@ -675,3 +675,11 @@ void main_task(intptr_t exinf)
 	SVC_PERROR(ext_ker());
 	assert(0);
 }
+
+void
+loop(intptr_t exinf)
+{
+	while(1) {
+		dly_tsk(100);
+	}
+}
