@@ -45,7 +45,7 @@
 #ifndef TOPPERS_TARGET_TEST_H
 #define TOPPERS_TARGET_TEST_H
 
-#define STACK_SIZE			(1024)
+#define STACK_SIZE			(2048)
 
 /*
  *  コア依存モジュール（ARM-M用）

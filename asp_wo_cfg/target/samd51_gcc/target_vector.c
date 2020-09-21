@@ -58,7 +58,7 @@ const  FP _kernel_vector_table[] =
 	(FP)(core_exc_entry), /* 5 */
 	(FP)(core_exc_entry), /* 6 */
 	(FP)(core_int_entry), /* 7 */ /* 何故か多重割込みでここが実行される */
-	(FP)(core_exc_entry), /* 8 */
+	(FP)(core_int_entry), /* 8 */ /* 何故か多重割込みでここが実行される */
 	(FP)(core_exc_entry), /* 9 */
 	(FP)(core_exc_entry), /* 10 */
 	(FP)(svc_handler),    /* 11 SVCall handler */
