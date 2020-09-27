@@ -1,5 +1,5 @@
 # JTAGICEを用いたデバッグ方法について
-- Last Modified:2020 Sep 21 18:47:32
+- Last Modified:2020 Sep 27 11:35:14
 
 ## このドキュメントについて
 TOPPERS/ASP Arduino ライブラリを用いたアプリケーションをJTAG-ICEを用い
@@ -62,10 +62,11 @@ ATMEL-ICEのVrefはないとエラーとなるため，とりあえずRTL8720D_T
 
 - スケッチを記述して"検証"のボタンを押して，実行ログを確認する．
 
----
+
+```
 "C:\\Users\\honda\\AppData\\Local\\Arduino15\\packages\\Seeeduino\\tools\\arm-none-eabi-gcc\\7-2017q4/bin/arm-none-eabi-size" -A "C:\\Users\\honda\\AppData\\Local\\Temp\\arduino_build_482246/Blink3.ino.elf"  
 最大507904バイトのフラッシュメモリのうち、スケッチが44916バイト（8%）を使っています。
----
+```
 
 - xxx.elfがデバッグ対象のファイルである．
  - Arduino IDE を起動し直すとフォルダが変更されるため注意すること．
