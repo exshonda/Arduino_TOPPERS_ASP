@@ -43,26 +43,28 @@
  */
 #include "kernel_impl.h"
 
+extern uint32_t __StackTop;
+
  /*
   *  ベクタテーブル
   */
-__attribute__ ((aligned(0x100U)))
- __attribute__((section(".rodata.vector")))
+__attribute__ ((aligned(0x400U)))
+ __attribute__((section(".isr_vector")))
 const  FP _kernel_vector_table[] =      
 {                                    
-	(FP)(NULL), /* 0 The initial stack pointer */
+	(FP)(&__StackTop), /* 0 The initial stack pointer */
 	(FP)_start,           /* 1 The reset handler */
 	(FP)(core_exc_entry), /* 2 */
-	(FP)(core_exc_entry), /* 3 */
+	(FP)(hardfault_handler), /* 3 */
 	(FP)(core_exc_entry), /* 4 */
 	(FP)(core_exc_entry), /* 5 */
 	(FP)(core_exc_entry), /* 6 */
-	(FP)(core_int_entry), /* 7 */ /* 何故か多重割込みでここが実行される */
-	(FP)(core_int_entry), /* 8 */ /* 何故か多重割込みでここが実行される */
+	(FP)(core_exc7_entry), /* 7 */ /* 何故か多重割込みでここが実行される */
+	(FP)(core_exc7_entry), /* 8 */ /* 何故か多重割込みでここが実行される */
 	(FP)(core_exc_entry), /* 9 */
 	(FP)(core_exc_entry), /* 10 */
 	(FP)(svc_handler),    /* 11 SVCall handler */
-	(FP)(core_exc_entry), /* 12 */
+	(FP)(pendsv_handler), /* 12 */
 	(FP)(core_exc_entry), /* 13 */
 	(FP)(core_exc_entry), /* 14 */
 	(FP)(core_int_entry), /* 15 */
