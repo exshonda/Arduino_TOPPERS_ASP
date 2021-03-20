@@ -41,7 +41,6 @@
 /*
  *  プロセッサ依存モジュール アセンブリ言語部（ARM-M用）
  */
-
 #define TOPPERS_MACRO_ONLY
 #define UINT_C(val)		(val)		/* uint_t型の定数を作るマクロ */
 #define ULONG_C(val)	(val)		/* ulong_t型の定数を作るマクロ */
@@ -81,8 +80,8 @@ ALABEL(dispatch_1)
 	ldr   r0, =p_runtsk           /* p_runtskを読み込む */
 	ldr   r1, [r0]
 	str   sp, [r1,#TCB_sp]        /* タスクスタックを保存 */
-	ldr   lr, =dispatch_r         /* 実行再開番地を保存 */
-	str   lr, [r1,#TCB_pc]        
+	ldr   r0, =dispatch_r         /* 実行再開番地を保存 */
+	str   r0, [r1,#TCB_pc]        
 	b     dispatcher
 
 	ATHUMB(dispatch_r)
@@ -508,8 +507,8 @@ ALABEL(ret_int_5)
 #endif /* TOPPERS_FPU_CONTEXT */ 
 	stmfd sp!, {r4-r11}       /* 残りのレジスタを保存 -(8*4) */
 	str   sp, [r1,#TCB_sp]    /* タスクスタックを保存 */
-	ldr   lr, =ret_int_r      /* 実行再開番地を保存   */
-	str   lr, [r1,#TCB_pc]
+	ldr   r4, =ret_int_r      /* 実行再開番地を保存   */
+	str   r4, [r1,#TCB_pc]
 	b     dispatcher          /* ディスパッチャへ */
 
 /*
