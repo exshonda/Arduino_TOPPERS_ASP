@@ -326,14 +326,13 @@ ALABEL(core_int_entry_2)
 	 *  実行中の割込み番号を更新
 	 */
 	ldr   r1, =run_intno
-	ldr   r0, [r1]
-	push  {r0}
+	ldr   r12, [r1]
+	push  {r12}
 	str   r3, [r1]
 
 	/*
 	 *  割込みハンドラの呼び出し
 	 */
-	mov   r0, r3                 /* 例外番号をパラメータに  */
 	blx   r2
 
 	/*
