@@ -212,10 +212,12 @@ disable_exc(EXCNO excno)
 void
 core_initialize(void)
 {
+#ifndef ARDUINO
 	/*
 	 *  ベクタテーブルを設定
 	 */
 	sil_wrw_mem((void*)NVIC_VECTTBL, (uint32_t)vector_table);
+#endif /* ARDUINO */
 
 	/*
 	 *  各例外の優先度を設定
@@ -312,17 +314,16 @@ extern ARDUINOVECTOR	exception_table[];
  *  未登録の割込みが発生した場合に呼び出される
  */
 void
-default_int_handler(void *p_excinf)
+default_int_handler(uint32_t excno, void *p_excinf)
 {
-	uint32_t basepri = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_IIPM);
-	uint32_t pc      = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_PC);
-	uint32_t xpsr    = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_XPSR);
-	uint32_t excno   = get_ipsr() & IPSR_ISR_NUMBER;
-
 	if (exception_table[excno] != NULL) {
 		(*(exception_table[excno]))();
 		return;
 	}
+
+	uint32_t basepri = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_IIPM);
+	uint32_t pc      = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_PC);
+	uint32_t xpsr    = *(((uint32_t*)p_excinf) + P_EXCINF_OFFSET_XPSR);
 
 	syslog(LOG_EMERG, "\nUnregistered Interrupt occurs.");
 	syslog(LOG_EMERG, "Excno = 0x%08X, PC = 0x%08X, XPSR = 0x%08X, iipm = 0x%08X, p_excinf = 0x%08X",

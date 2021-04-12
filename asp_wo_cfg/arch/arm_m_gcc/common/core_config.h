@@ -255,7 +255,7 @@ extern void default_exc_handler(void *p_excinf);
 /*
  * 未登録の割込みが発生した場合に呼び出される
  */
-extern void default_int_handler(void *p_excinf);
+extern void default_int_handler(uint32_t excno, void *p_excinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
 

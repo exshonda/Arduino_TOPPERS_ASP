@@ -284,7 +284,7 @@ ALABEL(core_int_entry)
 	/*
 	 *  割込み発生時の割込み優先度マスクをスタックに保存するため取得
 	 */
-	mrs   r0, basepri             /* baepriの値を取得 */
+	mrs   r3, basepri             /* baepriの値を取得 */
 
 	/*
 	 * 多重割込みかチェック
@@ -293,54 +293,54 @@ ALABEL(core_int_entry)
 	 */
 	tst   lr, #EXC_RETURN_PSP    /* 割込み元がMSPなら多重割込み */
 	beq   core_int_entry_1       /* 多重割込みならcore_int_entry_1へ */
-	mrs   r3, psp                /* 一段目の割込みの場合はPSP上に */
-	stmfd r3!, {r0, lr}          /* 割込み発生時の割込み優先度マスク(r0)，EXC_RETURN(lr)の順にPSP上に積む -8 */
-	msr   psp, r3                
-	push  {r0,lr}                /* 割込み発生時の割込み優先度マスク(r0)，EXC_RETURN(lr)の順にMSP上に積む -8 */
-	mov   r0, r3                 /* 未定義の割込みが発生した場合の情報とする */
+	mrs   r1, psp                /* 一段目の割込みの場合はPSP上に */
+	stmfd r1!, {r3,lr}           /* 割込み発生時の割込み優先度マスク(r3)，EXC_RETURN(lr)の順にPSP上に積む -8 */
+	msr   psp, r1                /* 未定義の割込みが発生した場合の情報とする */
+	push  {r3,lr}                /* 割込み発生時の割込み優先度マスク(r3)，EXC_RETURN(lr)の順にMSP上に積む -8 */
 	b     core_int_entry_2
 ALABEL(core_int_entry_1)         /* 多重割込みの場合 */
-	push  {r0,lr}                /* 割込み発生時の割込み優先度マスク(r0)，EXC_RETURN(lr)の順にPSP上に積む -8 */
-	mov   r0, sp                 /* 未定義の割込みが発生した場合の情報とする */
+	push  {r3,lr}                /* 割込み発生時の割込み優先度マスク(r3)，EXC_RETURN(lr)の順にPSP上に積む -8 */
+	mov   r1, sp                 /* 未定義の割込みが発生した場合の情報とする */
 
 	/*
 	 *  共通処理
 	 */
 ALABEL(core_int_entry_2)
-	mrs   r3, ipsr               /* ハンドラアドレスを取得 */
-	ldr   r1, =_kernel_exc_tbl
-	ldr   r2, [r1, r3, lsl #2]
+	mrs   r0, ipsr               /* 例外番号をパラメータ用に取得 */
 
 #ifdef LOG_INH_ENTER
 	push  {r0,r1,r2,r3}          /* r1はスタック境界調整のためのダミー */
-	mov   r0, r3                 /* 例外番号をパラメータに  */
 	bl    log_inh_enter          /* log_exc_enterを呼び出す */
 	pop   {r0,r1,r2,r3}          /* r1はスタック境界調整のためのダミー */
 #endif /* LOG_EXC_ENTER */
 
 #ifdef LOG_INH_LEAVE
-	push  { r3,r4 }             /* 例外番号(r3)をスタックへ,r4はスタック境界調整のためのダミー -8 */
+	push  {r0,r4}                /* 例外番号(r0)をスタックへ,r4はスタック境界調整のためのダミー -8 */
 #endif /* LOG_INT_LEAVE */
 
 	/*
 	 *  実行中の割込み番号を更新
 	 */
-	ldr   r1, =run_intno
-	ldr   r12, [r1]
-	push  {r12}
-	str   r3, [r1]
+	ldr   r2, =run_intno
+	ldr   r3, [r2]
+	push  {r3}
+	str   r0, [r2]
 
 	/*
 	 *  割込みハンドラの呼び出し
+	 *    r0 : 割込み番号（例外番号）
+	 *    r1 : 例外コンテキストの保存先の先頭アドレス(未定義の割込み用)
 	 */
+	ldr   r2, =_kernel_exc_tbl
+	ldr   r2, [r2, r0, lsl #2]
 	blx   r2
 
 	/*
 	 *  実行中の割込み番号を戻す
 	 */
 	pop   {r0}
-	ldr   r1, =run_intno
-	str   r0, [r1]
+	ldr   r2, =run_intno
+	str   r0, [r2]
 
 #ifdef LOG_INH_LEAVE
 	pop   {r0,r1}                /* 例外番号を引数に，r1はスタック境界調整のためのダミー +8 */
@@ -613,9 +613,12 @@ ALABEL(start_dispatch)
 	 *  また，task_initializeでdisdspをfalseに初期化しているため，ディ
 	 *  スパッチ許可状態になっている．
 	 */
+#ifndef ARDUINO
+	 /* (ArduinoライブラリのMSPをそのまま使用する。_sbrkとの整合) */
 	ldr   r0,=istkpt              /* MSPを初期化   */
 	ldr   r1,[r0]                 /* start_dispatch呼び出し時に呼び出し用に */
 	msr   msp, r1                 /* 使用しているため初期化する             */
+#endif /* ARDUINO */
 	ldr   r1, =IIPM_LOCK          /* カーネル管理内の割込みを禁止 */
 	msr   basepri, r1 
 	cpsie f                       /* カーネル管理外の割込みを許可 */
