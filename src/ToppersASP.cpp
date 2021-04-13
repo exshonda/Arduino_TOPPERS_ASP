@@ -14,23 +14,109 @@ extern void user_inirtn(void);
  */
 extern void user_terrtn(void);
 
-#ifdef ARDUINO
+ 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
- *  カーネルのスタート関数
+ *  ASPカーネルのシステムライブラリの関数
+ */
+void inirtn(void);
+
+extern void target_prepare(void);
+
+extern void target_timer_initialize(intptr_t exinf);
+extern void	print_banner(intptr_t exinf) throw();
+extern void	logtask_initialize(intptr_t exinf) throw();
+
+extern void	logtask_terminate(intptr_t exinf) throw();
+extern void	target_timer_terminate(intptr_t exinf) throw();
+
+#define kerflg _kernel_kerflg
+extern bool_t kerflg;
+
+#define target_initialize _kernel_target_initialize
+extern void target_initialize(void);
+
+#define initialize_kmm _kernel_initialize_kmm
+extern void initialize_kmm(void);
+#define initialize_tmevt _kernel_initialize_tmevt
+extern void initialize_tmevt(void);
+#define initialize_object _kernel_initialize_object
+extern void initialize_object(void);
+
+#define start_dispatch				_kernel_start_dispatch
+extern void start_dispatch(void) NoReturn;
+
+#define vector_table _kernel_vector_table
+extern const FP vector_table[];
+#define NVIC_VECTTBL        0xE000ED08
+
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef ARDUINO
+
+/*
+ *  カーネルの初期化
  */
 void
-StartToppersASP(void)
+preini_ker(void)
+{
+	/*
+	 *  ターゲット依存の初期化
+	 */
+	target_initialize();
+
+	/*
+	 *  各モジュールの初期化
+	 *
+	 *  タイムイベント管理モジュールは他のモジュールより先に初期化
+	 *  する必要がある．
+	 */
+	initialize_kmm();
+	initialize_tmevt();
+	initialize_object();
+}
+
+void *kernel_init __attribute__((section(".preinit_array"))) = (void *)&preini_ker;
+
+void
+initVariant(void)
 {
 	/* SEMCOM2初期化 */
 	Serial1.begin(115200);
 	Serial1.println("TOPPERS/ASP for Arduino");
 	Serial1.flush();
 
+	/*
+	 *  初期化ルーチンの実行
+	 */ 
+	inirtn();
+}
+
+/*
+ *  カーネルのスタート関数
+ */
+void
+StartToppersASP(void)
+{
 	/* 割込みロック状態へ */
 	Asm("cpsid f");
 
-	/* カーネルスタート */
-	sta_ker();
+	/*
+	 *  割込み/CPU例外の初期化処理（ターゲット依存）
+	 */
+	target_prepare();
+
+	/*
+	 *  カーネル動作の開始
+	 */
+	kerflg = true;
+	start_dispatch();
+	assert(0);
 }
 
 #define CAL_FACTOR (F_CPU/6000)
@@ -55,22 +141,12 @@ user_terrtn() {
 extern "C" {
 #endif
 
-/*
- *  ASPカーネルのシステムライブラリの関数
- */
-extern void target_timer_initialize(intptr_t exinf);
-extern void	print_banner(intptr_t exinf) throw();
-extern void	logtask_initialize(intptr_t exinf) throw();
-
-extern void	logtask_terminate(intptr_t exinf) throw();
-extern void	target_timer_terminate(intptr_t exinf) throw();
-
 #ifdef USE_TINYUSB
 static void init_tinyusb(void);
 #endif /* USE_TINYUSB */
 
 #ifdef ENABLE_IDLELOOP
-static void init_idleloop(void);
+void init_idleloop(void);
 #endif /* ENABLE_IDLELOOP */
 
 void
@@ -134,7 +210,8 @@ loop_task(intptr_t exinf)
  */
 extern STK_T		*__StackTop;
 
-static void
+__attribute__((weak))
+void
 init_idleloop(void) {
 	T_CTSK	ctsk;
 	ER		ercd;
@@ -157,7 +234,17 @@ init_idleloop(void) {
 void
 delay(unsigned long ms)
 {
-	dly_tsk(ms);
+	ER ercd;
+
+	if (!kerflg){
+		ToppersASPDelayMs(ms);
+		return;
+	}
+
+	ercd = dly_tsk(ms);
+	if (ercd != E_OK) {
+		ToppersASPDelayMs(ms);
+	}
 }
 
 void
@@ -185,7 +272,7 @@ init_tinyusb(void) {
 
 	ctsk.tskatr = TA_NULL;
 	ctsk.exinf = 1;
-	ctsk.task = task;
+	ctsk.task = tinyusb_task_backgroud;
 	ctsk.itskpri = 1;
 	ctsk.stksz = 512;
 	ctsk.stk = NULL;

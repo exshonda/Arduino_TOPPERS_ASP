@@ -28,7 +28,6 @@ extern void ToppersASPDelayMs(uint32_t ms);
 extern "C" {
 #endif
 
-extern void sta_ker(void);
 extern void CLOCK_Initialize(void);
   
 #ifdef __cplusplus

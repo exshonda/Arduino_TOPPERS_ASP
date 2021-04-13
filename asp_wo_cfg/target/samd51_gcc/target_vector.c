@@ -43,8 +43,6 @@
  */
 #include "kernel_impl.h"
 
-extern uint32_t __StackTop;
-
  /*
   *  ベクタテーブル
   */

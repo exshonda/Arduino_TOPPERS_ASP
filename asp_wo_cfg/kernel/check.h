@@ -366,12 +366,17 @@
 /*
  *  呼出しコンテキストのチェック（E_CTX）
  */
+#ifndef ARDUINO
 #define CHECK_INIRTN() do {									\
 	if (kerflg) {											\
 		ercd = E_CTX;										\
 		goto error_exit;									\
 	}														\
 } while (false)
+#else /* ARDUINO */
+/* 起動後もオブジェクト生成を可能とする */
+#define CHECK_INIRTN() do {} while (false)
+#endif /* ARDUINO */
 
 #define CHECK_TSKCTX() do {									\
 	if (sense_context()) {									\

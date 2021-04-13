@@ -384,4 +384,12 @@ target_prepare(void)
 			exc_tbl[INDEX_EXCNO(i) + 1] = (FP)default_exc_handler;
 		}
 	}
+
+#ifdef ARDUINO
+	/*
+	 *  ベクタテーブルを設定
+	 *   割込みハンドラの登録後にベクターテーブルを設定する． 
+	 */
+	sil_wrw_mem((void*)NVIC_VECTTBL, (uint32_t)vector_table);
+#endif /* ARDUINO */
 }
