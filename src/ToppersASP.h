@@ -13,6 +13,8 @@
 #include "../asp_wo_cfg/syssvc/syslog.h"
 #include "../asp_wo_cfg/syssvc/serial.h"
 #include "kernel_id.h"
+#undef true
+#undef false
 
 /*
  *  カーネルのスタート関数
