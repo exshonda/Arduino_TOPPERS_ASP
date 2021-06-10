@@ -76,7 +76,11 @@ extern "C" {
 #ifndef ARDUINO_PASS
 #include "target_kernel.h"
 #else /* ARDUINO_PASS */
+#ifdef ARDUINO_SEEED_XIAO_M0
+#include "../asp_wo_cfg/target/samd21_gcc/target_kernel.h"
+#else /* ARDUINO_SEEED_XIAO_M0 */
 #include "../asp_wo_cfg/target/samd51_gcc/target_kernel.h"
+#endif /* ARDUINO_SEEED_XIAO_M0 */
 #endif /* ARDUINO_PASS */
 
 #ifndef TOPPERS_MACRO_ONLY

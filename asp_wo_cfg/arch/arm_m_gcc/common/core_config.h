@@ -613,7 +613,11 @@ extern void svc_handler(void);
  *  ARMv6-Mに関する処理 
  */
 #if (TMAX_INTNO - 16) < 32
+#ifndef ARDUINO_PASS
 #include "core_config_v6m.h"
+#else /* ARDUINO_PASS */
+#include <../asp_wo_cfg/arch/arm_m_gcc/common/core_config_v6m.h>
+#endif /* ARDUINO_PASS */
 #else
 #include "core_config_baseline.h"
 #endif 

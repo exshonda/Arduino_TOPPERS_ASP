@@ -131,11 +131,29 @@ svc_perror(const char *file, int_t line, const char *expr, ER ercd)
 
 extern void port_initialize(void);
 extern void sercom_init_uart(uint32_t portid);
+extern void sercom_putc(uint32_t siopid, char c);
+extern void led_on();
+extern void led_off();
 
-FP exception_table[16 + 138 + 1];
+void
+leddebug(void){
+	volatile int i;
+	
+	while(1){
+		led_on();
+		for(i = 0; i < 1000000; i++);
+		sercom_putc(1, 'o');
+		led_off();
+		for(i = 0; i < 1000000; i++);
+		sercom_putc(1, 'i');
+	}
+}
+
+FP exception_table[16 + 28];
 
 void
 setup(void) {
+
 	/*
 	 * クロックの初期化
 	 */
@@ -169,6 +187,8 @@ user_inirtn(void)
 	T_CALM	calm;
 	T_DEXC	dexc;
 	ER		ercd;
+
+//	leddebug();
 
 	/*
 	 *  サンプルプログラムの初期化処理（sample1.cfg相当の処理）

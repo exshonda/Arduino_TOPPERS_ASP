@@ -41,7 +41,7 @@
     <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
     <ResetRule>0</ResetRule>
-    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
     <EraseKey />
     <avrtoolserialnumber>J41800003175</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x60060301</avrdeviceexpectedsignature>

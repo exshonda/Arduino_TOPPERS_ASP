@@ -2,7 +2,7 @@
 
 ## 本ライブラリについて
 
-本ライブラリは，[TOPPERS/ASPカーネル](https://www.toppers.jp/asp-kernel.html)（以下，ASPカーネル）を Wio Terminal の Arduino IDE 用のライブラリである．
+本ライブラリは，[TOPPERS/ASPカーネル](https://www.toppers.jp/asp-kernel.html)（以下，ASPカーネル）を Wio Terminal/Seeeduino Xiao で動作させる Arduino IDE 用のライブラリである．
 
 [Seeed_Arduino_FreeRTOS](https://github.com/Seeed-Studio/Seeed_Arduino_FreeRTOS)にインスパイアされて開発した．
 
@@ -32,7 +32,7 @@
 
 ## 使用方法
 
-### 機材の準備
+### 機材の準備（WioTerminal）
 
 SERCOM2にシリアルコンソールを使用する場合は，背面の以下のピンに USB UART を接続する．
 
@@ -42,7 +42,15 @@ SERCOM2にシリアルコンソールを使用する場合は，背面の以下�
 |  8 | TXD | 
 | 10 | RXD | 
 
-### Wio Terminal用の環境の準備
+### 機材の準備（Seeeduino Xiao）
+
+| 端子番号 | 機能 |
+----|---- 
+|  6 | TXD | 
+|  7 | RXD | 
+
+
+### Wio Terminal/Seeeduio Xiao用の環境の準備
 
 [このページ](https://wiki.seeedstudio.com/jp/Wio-Terminal-Getting-Started/)を参考にWio Terminal用の環境を用意する．
 
@@ -213,8 +221,7 @@ Arduino IDEから書き込めない場合は，Wio Terminalの電源スイッチ
 - doc
 	- 各種ドキュメント．
 - standalone
-	- スタンドアローン実行のためのフォルダ．
+	- WioTerminalのスタンドアローン実行のためのフォルダ．
+- standalone
+    - Seeduio Xioaのスタンドアローン実行のためのフォルダ．
 
-## 既知の問題
-
-- 多重割込みが発生するとベクタ番号7ないし8のアドレスのハンドラが実行される場合がある．

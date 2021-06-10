@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Object</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ProjectGuid>{a74b20d1-bb59-46f1-bf8a-5e1561f12f09}</ProjectGuid>
+    <avrdeviceseries>none</avrdeviceseries>
+    <avrdevice>ATSAMD21G18A</avrdevice>
+    <avrtool>com.atmel.avrdbg.tool.samice</avrtool>
+    <OutputFileName>asp</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>C:\Users\honda\Documents\Arduino\libraries\Arduino_TOPPERS_ASP\standalone_xiao</OutputDirectory>
+    <ObjectProjectType>True</ObjectProjectType>
+    <MD5HashValue>44798A581FA9DD05368B3180C1E83CCB</MD5HashValue>
+    <RootFolderCreationPattern>OptimizedRoot</RootFolderCreationPattern>
+    <IsObjLinkFile>True</IsObjLinkFile>
+    <UseGdb>false</UseGdb>
+    <UseGdbCustomPath>false</UseGdbCustomPath>
+    <GdbCustomPath>
+    </GdbCustomPath>
+    <com_atmel_avrdbg_tool_samice>
+      <ToolOptions>
+        <InterfaceProperties>
+          <SwdClock>4000000</SwdClock>
+        </InterfaceProperties>
+        <InterfaceName>SWD</InterfaceName>
+        <JlinkConfigFile>C:\Users\honda\Documents\Arduino\libraries\Arduino_TOPPERS_ASP\standalone_xiao\asp\asp\asp\jlink.config</JlinkConfigFile>
+      </ToolOptions>
+      <ToolType>com.atmel.avrdbg.tool.samice</ToolType>
+      <ToolNumber>801010928</ToolNumber>
+      <ToolName>J-Link</ToolName>
+    </com_atmel_avrdbg_tool_samice>
+    <avrtoolinterface>SWD</avrtoolinterface>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <OverrideVtor>false</OverrideVtor>
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <ResetRule>0</ResetRule>
+    <EraseKey />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  </PropertyGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\Vs\FakeObjProjects.targets" />
+  <ItemGroup />
+</Project>

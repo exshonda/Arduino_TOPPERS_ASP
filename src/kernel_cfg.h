@@ -18,6 +18,10 @@
 /*
  *  カーネルが割り付けるメモリ領域のサイズ
  */
+#ifdef ARDUINO_SEEED_XIAO_M0
+#define	KMM_SIZE	(1024 * 16)
+#else /* ARDUINO_SEEED_XIAO_M0 */
 #define	KMM_SIZE	(1024 * 32)
+#endif /* ARDUINO_SEEED_XIAO_M0 */
 
 #endif /* TOPPERS_KERNEL_CFG_H */

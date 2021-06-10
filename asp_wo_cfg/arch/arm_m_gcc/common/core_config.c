@@ -52,12 +52,12 @@
  *  TOPPERS標準割込み処理モデル実現のための変数と初期化処理
  *  ARMv6-MとARMv7-Mで異なるためifdefに切り分けている
  */
+INTNO    run_intno;					/*  実行中の割込みハンドラの番号 */
 
 #if __TARGET_ARCH_THUMB == 4
 
 volatile bool_t		lock_flag;		/* CPUロックフラグの値を保持する変数 */
 volatile uint32_t	saved_iipm;		/* 割込み優先度マスクを保存する変数 */
-INTNO run_intno;					/*  実行中の割込みハンドラの番号 */
 
 static void
 init_intmodel(void){

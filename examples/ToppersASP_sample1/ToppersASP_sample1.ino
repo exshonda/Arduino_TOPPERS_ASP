@@ -59,7 +59,7 @@ svc_perror(const char *file, int_t line, const char *expr, ER ercd)
 #endif /* TASK_PORTID */
 
 #ifndef STACK_SIZE
-#define STACK_SIZE    4096    /* タスクのスタックサイズ */
+#define STACK_SIZE    1028  /* タスクのスタックサイズ */
 #endif /* STACK_SIZE */
 
 #ifndef LOOP_REF

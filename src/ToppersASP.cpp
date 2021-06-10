@@ -157,9 +157,10 @@ inirtn(void)
 	 */
 	target_timer_initialize(0);
 	syslog_initialize(0);
-	print_banner(0);
 	serial_initialize(0);
+	print_banner(0);
 	logtask_initialize(0);
+
 
 	/*
 	 *  ユーザー記述の初期化関数の呼び出し
